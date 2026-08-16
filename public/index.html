@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
+<title>PDF Pro AI</title>
+<meta name="description" content="Merge, split, compress, convert, sign and scan documents — right inside Telegram." />
+<link rel="icon" href="/icons/favicon.svg" />
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/home.css" />
+<link rel="stylesheet" href="/css/pdf.css" />
+<link rel="stylesheet" href="/css/animation.css" />
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+<div id="app">
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside id="sidebar" class="sidebar glass-strong">
+    <div class="sidebar-brand">
+      <div class="logo-mark">P</div>
+      <div class="name">PDF Pro AI</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <button class="sidebar-link active" data-view="dashboard"><span class="ico">🏠</span> <span data-i18n="dashboard">Dashboard</span></button>
+
+      <div class="sidebar-section-label">PDF Tools</div>
+      <button class="sidebar-link" data-tool="merge"><span class="ico">🧩</span> Merge PDF</button>
+      <button class="sidebar-link" data-tool="split"><span class="ico">✂️</span> Split PDF</button>
+      <button class="sidebar-link" data-tool="compress"><span class="ico">🗜️</span> Compress PDF</button>
+      <button class="sidebar-link" data-tool="rotate"><span class="ico">🔄</span> Rotate PDF</button>
+      <button class="sidebar-link" data-tool="delete-pages"><span class="ico">🗑️</span> Delete Pages</button>
+
+      <div class="sidebar-section-label">Convert</div>
+      <button class="sidebar-link" data-tool="pdf-to-word"><span class="ico">📄</span> PDF → Word</button>
+      <button class="sidebar-link" data-tool="word-to-pdf"><span class="ico">📝</span> Word → PDF</button>
+      <button class="sidebar-link" data-tool="excel-to-pdf"><span class="ico">📊</span> Excel → PDF</button>
+      <button class="sidebar-link" data-tool="ppt-to-pdf"><span class="ico">📽️</span> PowerPoint → PDF</button>
+      <button class="sidebar-link" data-tool="images-to-pdf"><span class="ico">🖼️</span> Image → PDF</button>
+
+      <div class="sidebar-section-label">Security &amp; Extras</div>
+      <button class="sidebar-link" data-tool="protect"><span class="ico">🔒</span> Protect PDF</button>
+      <button class="sidebar-link" data-tool="unlock"><span class="ico">🔓</span> Unlock PDF</button>
+      <button class="sidebar-link" data-tool="watermark"><span class="ico">💧</span> Add Watermark</button>
+      <button class="sidebar-link" data-tool="signature"><span class="ico">✍️</span> Add Signature</button>
+      <button class="sidebar-link" data-tool="scan"><span class="ico">📷</span> Scan Document</button>
+      <button class="sidebar-link" data-tool="extract-text"><span class="ico">🔤</span> Extract Text</button>
+      <button class="sidebar-link" data-tool="extract-images"><span class="ico">🖼️</span> Extract Images</button>
+      <button class="sidebar-link" data-tool="ocr"><span class="ico">🔎</span> OCR</button>
+
+      <div class="sidebar-section-label">Utilities</div>
+      <button class="sidebar-link" data-tool="image-compress"><span class="ico">📉</span> Image Compressor</button>
+      <button class="sidebar-link" data-tool="bg-remove"><span class="ico">🪄</span> Background Remover</button>
+      <button class="sidebar-link" data-tool="qr-generate"><span class="ico">▦</span> QR Generator</button>
+      <button class="sidebar-link" data-tool="qr-scan"><span class="ico">📡</span> QR Scanner</button>
+
+      <div class="sidebar-section-label">Account</div>
+      <button class="sidebar-link" data-view="premium"><span class="ico">💎</span> <span data-i18n="premium">Premium</span></button>
+      <button class="sidebar-link" data-view="referral"><span class="ico">👥</span> <span data-i18n="referral">Invite Friends</span></button>
+      <button class="sidebar-link" data-view="settings"><span class="ico">⚙️</span> <span data-i18n="settings">Settings</span></button>
+      <button class="sidebar-link" data-view="help"><span class="ico">❓</span> <span data-i18n="help">Help Center</span></button>
+      <button class="sidebar-link hidden" id="admin-nav-link" data-view="admin"><span class="ico">🛠️</span> <span data-i18n="admin">Admin Panel</span></button>
+    </nav>
+  </aside>
+
+  <!-- ===================== MAIN AREA ===================== -->
+  <main class="main-area">
+
+    <div class="topbar glass">
+      <div class="topbar-left">
+        <button class="icon-btn" id="btn-menu" aria-label="Open menu">☰</button>
+        <span class="topbar-title" id="topbar-title">Dashboard</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="icon-btn" id="btn-lang" aria-label="Switch language">🌐</button>
+        <button class="icon-btn" id="btn-theme" aria-label="Toggle dark mode">🌙</button>
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD VIEW ===== -->
+    <section id="view-dashboard" class="view active">
+      <div class="glass hero">
+        <div class="scan-frame"><div class="scan-beam"></div></div>
+        <div class="doc-stack">
+          <div class="card"></div><div class="card"></div><div class="card"></div>
+        </div>
+        <div class="hero-eyebrow"><span class="dot"></span> ALL SYSTEMS READY</div>
+        <h1><span data-i18n="greeting">Welcome</span> <span id="user-first-name">Guest</span> 👋<br/><span data-i18n="subtitle">What are we doing today?</span></h1>
+        <p class="lead" data-i18n="heroDesc">22 document tools, zero desktop software. Merge, convert, sign, and scan — straight from this chat.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="btn-hero-upload"><span data-i18n="uploadFile">📤 Upload a file</span></button>
+          <button class="btn btn-ghost" id="btn-hero-merge"><span data-i18n="mergePdfs">🧩 Merge PDFs</span></button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="glass stat-card"><div class="value" id="stat-ops">0</div><div class="label" data-i18n="opsToday">Ops today</div></div>
+        <div class="glass stat-card"><div class="value" id="stat-remaining">10</div><div class="label" data-i18n="freeLeft">Free left</div></div>
+        <div class="glass stat-card"><div class="value" id="stat-plan">Free</div><div class="label" data-i18n="plan">Plan</div></div>
+      </div>
+
+      <div class="section-title" data-i18n="tools">Tools</div>
+      <div class="category-tabs" id="category-tabs">
+        <button class="category-tab active" data-category="all" data-i18n="all">All</button>
+        <button class="category-tab" data-category="pdf" data-i18n="pdfTools">PDF Tools</button>
+        <button class="category-tab" data-category="convert" data-i18n="convert">Convert</button>
+        <button class="category-tab" data-category="security" data-i18n="security">Security</button>
+        <button class="category-tab" data-category="utility" data-i18n="utilities">Utilities</button>
+      </div>
+
+      <div class="tool-grid" id="tool-grid"></div>
+    </section>
+
+
+    <!-- ===== TOOL PANEL VIEW (dynamic) ===== -->
+    <section id="view-tool" class="view">
+      <div class="glass" style="padding:20px;">
+        <div class="panel-header">
+          <div class="tool-icon-lg" id="tool-panel-icon">🧩</div>
+          <div>
+            <h2 id="tool-panel-title">Tool</h2>
+            <p id="tool-panel-desc">Description</p>
+          </div>
+        </div>
+        <div id="tool-panel-body"><!-- rendered by pdf.js --></div>
+      </div>
+    </section>
+
+    <!-- ===== PREMIUM VIEW ===== -->
+    <section id="view-premium" class="view">
+      <div class="glass premium-card">
+        <div class="crown">💎</div>
+        <h2>PDF Pro AI Premium</h2>
+        <p>Unlock unlimited daily operations and skip every limit.</p>
+
+        <div class="premium-grid" id="premium-plans-grid">
+          <!-- populated from /api/payment/plans so it always matches data/settings.json -->
+        </div>
+
+        <p style="margin-top:14px; font-size:11.5px;">Choose Telegram Stars for instant activation or USDT for manual confirmation.</p>
+      </div>
+    </section>
+
+    <!-- ===== INVITE FRIENDS / REFERRAL VIEW ===== -->
+    <section id="view-referral" class="view">
+      <div class="glass premium-card">
+        <div class="crown">👥</div>
+        <h2 data-i18n="inviteHeading">Invite Friends</h2>
+        <p data-i18n="inviteDesc">Earn free credits for every friend who joins — and free Premium at 30 referrals.</p>
+
+        <div class="stats-row" style="margin-top:16px;">
+          <div class="glass stat-card"><div class="value" id="referral-count">0</div><div class="label" data-i18n="referrals">Referrals</div></div>
+          <div class="glass stat-card"><div class="value" id="referral-credits">0</div><div class="label" data-i18n="freeCredits">Free credits</div></div>
+        </div>
+
+        <div class="glass" style="padding:16px; margin-top:14px; display:flex; flex-direction:column; gap:10px;">
+          <div style="font-size:11.5px; color:var(--text-muted);" data-i18n="inviteLink">Your invite link</div>
+          <div id="referral-link" style="font-family:var(--font-mono); font-size:12.5px; word-break:break-all;">—</div>
+          <button class="btn btn-primary btn-block" id="btn-copy-referral" data-i18n="copyLink">Copy link</button>
+          <button class="btn btn-ghost btn-block" id="btn-share-referral" data-i18n="shareTelegram">Share via Telegram</button>
+        </div>
+
+        <ul class="premium-feature-list" style="margin-top:16px;">
+          <li>✅ +5 free credits per verified referral</li>
+          <li>✅ Bonus credits at 10 referrals</li>
+          <li>✅ 30 days of Premium, free, at 30 referrals</li>
+          <li>✅ Big bonus credits at 100 referrals</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS VIEW ===== -->
+    <section id="view-settings" class="view">
+      <div class="glass" style="padding:8px 16px;">
+        <div class="settings-row">
+          <div><div class="s-label" data-i18n="darkMode">Dark mode</div><div class="s-sub" data-i18n="darkModeSub">Follows Telegram theme by default</div></div>
+          <label class="switch"><input type="checkbox" id="toggle-dark" /><span class="track"><span class="thumb"></span></span></label>
+        </div>
+        <div class="settings-row">
+          <div><div class="s-label" data-i18n="language">Language</div><div class="s-sub" data-i18n="languageSub">Interface language</div></div>
+          <select id="select-lang" style="width:auto;">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="ar">العربية</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div><div class="s-label" data-i18n="syncTheme">Sync with Telegram theme</div><div class="s-sub" data-i18n="syncThemeSub">Match your Telegram app's colors</div></div>
+          <label class="switch"><input type="checkbox" id="toggle-tg-theme" checked /><span class="track"><span class="thumb"></span></span></label>
+        </div>
+      </div>
+      <div class="section-title" data-i18n="about">About</div>
+      <div class="glass" style="padding:16px;">
+        <p data-i18n="aboutText">PDF Pro AI v1.0.0 — built with Node.js, Express &amp; the Telegram Mini Apps platform.</p>
+      </div>
+    </section>
+
+    <!-- ===== HELP / FAQ VIEW ===== -->
+    <section id="view-help" class="view">
+      <div class="glass" style="padding:18px 16px;" id="faq-list"></div>
+      <div class="section-title" data-i18n="stillStuck">Still stuck?</div>
+      <div class="glass" style="padding:16px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:13px;" data-i18n="messageSupport">Message our support team</span>
+        <button class="btn btn-ghost btn-sm" id="btn-contact-support" data-i18n="contact">Contact</button>
+      </div>
+    </section>
+
+    <!-- ===== ADMIN VIEW ===== -->
+    <section id="view-admin" class="view">
+      <div class="admin-shell">
+        <div class="glass admin-hero">
+          <div class="admin-hero-copy">
+            <div class="join-badge">👑 Owner control center</div>
+            <h2>Modern admin dashboard</h2>
+            <p>Manage users, premium plans, payments, broadcasts, referrals, coupons, analytics, settings, and logs from one secure place.</p>
+          </div>
+          <div class="admin-hero-actions">
+            <button class="btn btn-primary btn-sm" id="btn-refresh-admin-top">🔄 Refresh</button>
+            <button class="btn btn-ghost btn-sm" id="btn-send-broadcast-short">📣 Broadcast</button>
+          </div>
+        </div>
+
+        <div class="stats-row admin-metrics">
+          <div class="glass stat-card"><div class="value" id="admin-total-users">0</div><div class="label">Users</div></div>
+          <div class="glass stat-card"><div class="value" id="admin-premium-users">0</div><div class="label">Premium</div></div>
+          <div class="glass stat-card"><div class="value" id="admin-pending-payments">0</div><div class="label">Pending</div></div>
+          <div class="glass stat-card"><div class="value" id="admin-referral-count">0</div><div class="label">Referrals</div></div>
+          <div class="glass stat-card"><div class="value" id="admin-stars-revenue">0</div><div class="label">Stars</div></div>
+          <div class="glass stat-card"><div class="value" id="admin-usdt-revenue">0</div><div class="label">USDT</div></div>
+        </div>
+
+        <div class="category-tabs admin-tabs" id="admin-tabs">
+          <button class="category-tab active" data-admin-tab="dashboard">🏠 Dashboard</button>
+          <button class="category-tab" data-admin-tab="users">👤 Users</button>
+          <button class="category-tab" data-admin-tab="premium">💎 Premium</button>
+          <button class="category-tab" data-admin-tab="payments">💳 Payments</button>
+          <button class="category-tab" data-admin-tab="broadcast">📣 Broadcast</button>
+          <button class="category-tab" data-admin-tab="referrals">👥 Referrals</button>
+          <button class="category-tab" data-admin-tab="analytics">📊 Analytics</button>
+          <button class="category-tab" data-admin-tab="coupons">🏷️ Coupons</button>
+          <button class="category-tab" data-admin-tab="settings">⚙️ Settings</button>
+          <button class="category-tab" data-admin-tab="logs">🪵 Logs</button>
+        </div>
+
+        <div class="admin-panel active" data-admin-panel="dashboard">
+          <div class="admin-card-grid">
+            <div class="glass admin-card"><div class="admin-card-title">Total users</div><div class="admin-card-value" id="admin-dashboard-total-users">0</div><div class="admin-card-sub">All registered accounts</div></div>
+            <div class="glass admin-card"><div class="admin-card-title">Premium users</div><div class="admin-card-value" id="admin-dashboard-premium-users">0</div><div class="admin-card-sub">Active subscriptions</div></div>
+            <div class="glass admin-card"><div class="admin-card-title">Broadcasts</div><div class="admin-card-value" id="admin-dashboard-broadcasts">0</div><div class="admin-card-sub">Messages sent to users</div></div>
+            <div class="glass admin-card"><div class="admin-card-title">Referral credits</div><div class="admin-card-value" id="admin-referral-credits">0</div><div class="admin-card-sub">Credits earned by users</div></div>
+          </div>
+          <div class="admin-two-col">
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Recent broadcasts</h3></div>
+              <div id="admin-broadcast-history" class="mini-list"></div>
+            </div>
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Quick actions</h3></div>
+              <div class="mini-list">
+                <div class="mini-row"><strong>Refresh admin data</strong><span>Reload all tables and counters</span></div>
+                <div class="mini-row"><strong>Broadcast message</strong><span>Send an announcement to all users</span></div>
+                <div class="mini-row"><strong>Manage premium</strong><span>Grant or revoke premium access</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="users">
+          <div class="glass admin-panel-card">
+            <div class="panel-head"><h3>Users</h3></div>
+            <div class="table-wrap"><table class="admin-table" id="admin-users-table"><thead><tr><th>Name</th><th>Username</th><th>Premium</th><th></th></tr></thead><tbody></tbody></table></div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="premium">
+          <div class="glass admin-panel-card">
+            <div class="panel-head"><h3>Premium pricing</h3></div>
+            <div class="admin-card-grid admin-pricing-grid">
+              <label>Monthly $ <input type="number" step="0.01" id="admin-monthly-usd" /></label>
+              <label>Yearly $ <input type="number" step="0.01" id="admin-yearly-usd" /></label>
+              <label>Pro $ <input type="number" step="0.01" id="admin-pro-usd" /></label>
+              <label>Monthly Stars <input type="number" id="admin-monthly-stars" /></label>
+              <label>Yearly Stars <input type="number" id="admin-yearly-stars" /></label>
+              <label>Pro Stars <input type="number" id="admin-pro-stars" /></label>
+            </div>
+            <div style="margin-top:14px;"><button class="btn btn-primary btn-block" id="btn-save-plans">Save Premium Plans</button></div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="payments">
+          <div class="glass admin-panel-card">
+            <div class="panel-head"><h3>Payments</h3></div>
+            <div class="table-wrap"><table class="admin-table" id="admin-payments-table"><thead><tr><th>ID</th><th>User</th><th>Plan</th><th>Method</th><th>Status</th><th>Amount</th><th></th></tr></thead><tbody></tbody></table></div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="broadcast">
+          <div class="glass admin-panel-card">
+            <div class="panel-head"><h3>Broadcast</h3></div>
+            <textarea id="admin-broadcast-message" rows="4" placeholder="Write an announcement for all users..."></textarea>
+            <div class="admin-inline-actions">
+              <button class="btn btn-primary" id="btn-send-broadcast">Send Broadcast</button>
+              <button class="btn btn-ghost" id="btn-refresh-admin">Refresh Data</button>
+            </div>
+            <div id="admin-broadcast-history" class="mini-list"></div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="referrals">
+          <div class="admin-two-col">
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Top referrers</h3></div>
+              <div id="admin-top-referrers" class="mini-list"></div>
+            </div>
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Referral events</h3></div>
+              <div id="admin-referral-events" class="mini-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="analytics">
+          <div class="stats-row">
+            <div class="glass stat-card"><div class="value" id="admin-total-ops">0</div><div class="label">Ops today</div></div>
+            <div class="glass stat-card"><div class="value" id="admin-stars-revenue">0</div><div class="label">Stars</div></div>
+            <div class="glass stat-card"><div class="value" id="admin-usdt-revenue">0</div><div class="label">USDT</div></div>
+          </div>
+          <div class="glass admin-panel-card">
+            <div class="panel-head"><h3>Plan summary</h3></div>
+            <div id="admin-plan-summary" class="mini-list"></div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="coupons">
+          <div class="admin-two-col">
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Create coupon</h3></div>
+              <div class="admin-form-grid">
+                <label>Code <input type="text" id="admin-coupon-code" placeholder="WELCOME20" /></label>
+                <label>Label <input type="text" id="admin-coupon-label" placeholder="20% Welcome Offer" /></label>
+                <label>Type
+                  <select id="admin-coupon-type"><option value="percent">Percent</option><option value="fixed">Fixed</option></select>
+                </label>
+                <label>Value <input type="number" id="admin-coupon-value" placeholder="20" /></label>
+                <label>Max Uses <input type="number" id="admin-coupon-max-uses" placeholder="100" /></label>
+                <label>Expires <input type="date" id="admin-coupon-expires" /></label>
+              </div>
+              <div class="admin-inline-actions"><button class="btn btn-primary" id="btn-save-coupon">Save Coupon</button><button class="btn btn-ghost" id="btn-refresh-coupons">Refresh Coupons</button></div>
+            </div>
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Coupons</h3></div>
+              <div id="admin-coupon-empty" class="mini-row hidden">No coupons yet.</div>
+              <div id="admin-coupon-list" class="mini-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="settings">
+          <div class="admin-two-col">
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>App settings</h3></div>
+              <label class="setting-toggle"><input type="checkbox" id="admin-maintenance-mode" /> <span>Maintenance mode</span></label>
+              <label>Free daily limit <input type="number" id="admin-free-limit" min="0" /></label>
+              <div style="margin-top:14px;"><button class="btn btn-primary btn-block" id="btn-save-settings">Save Settings</button></div>
+            </div>
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Notes</h3></div>
+              <div class="mini-list">
+                <div class="mini-row"><span>Join gate</span><strong>Disabled</strong></div>
+                <div class="mini-row"><span>Telegram auth</span><strong>Enabled</strong></div>
+                <div class="mini-row"><span>Premium flow</span><strong>Stars + USDT</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-panel" data-admin-panel="logs">
+          <div class="admin-two-col">
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Access logs</h3></div>
+              <div id="admin-access-log" class="mini-list"></div>
+            </div>
+            <div class="glass admin-card-panel">
+              <div class="panel-head"><h3>Error logs</h3></div>
+              <div id="admin-error-log" class="mini-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast-stack"></div>
+
+<div id="modal-backdrop" class="modal-backdrop">
+  <div class="modal-sheet glass-strong" id="modal-sheet"></div>
+</div>
+
+<script src="/js/telegram.js"></script>
+<script src="/js/ui.js"></script>
+<script src="/js/upload.js"></script>
+<script src="/js/pdf.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

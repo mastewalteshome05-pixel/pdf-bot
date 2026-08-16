@@ -1,0 +1,119 @@
+/* ============================================================
+   home.css — Hero, dashboard stats, tool grid
+   ============================================================ */
+
+.hero {
+  position: relative;
+  padding: 30px 22px 26px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent-cyan); margin-bottom: 10px;
+}
+.hero-eyebrow .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+.hero h1 {
+  font-size: 26px; font-weight: 700; margin-bottom: 8px;
+}
+.hero h1 span { color: var(--accent-cyan); }
+
+.hero p.lead {
+  font-size: 14px; max-width: 46ch; margin-bottom: 20px;
+}
+
+.hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Scan beam signature element — a light sweep behind the hero content */
+.scan-frame {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  pointer-events: none;
+}
+.scan-beam {
+  position: absolute;
+  top: 0; left: -20%;
+  width: 40%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(55, 226, 196, 0.16), rgba(124, 107, 255, 0.22), transparent);
+  animation: scanSweep 5.5s ease-in-out infinite;
+}
+.doc-stack {
+  position: absolute; right: -18px; top: 14px; width: 128px; height: 128px;
+  opacity: 0.9;
+}
+.doc-stack .card {
+  position: absolute; width: 78px; height: 100px; border-radius: 10px;
+  background: var(--glass-surface-strong); border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-soft);
+}
+.doc-stack .card:nth-child(1) { transform: rotate(-14deg) translate(6px, 20px); }
+.doc-stack .card:nth-child(2) { transform: rotate(-2deg) translate(20px, 8px); }
+.doc-stack .card:nth-child(3) {
+  transform: rotate(9deg) translate(34px, -4px);
+  background: linear-gradient(160deg, rgba(124,107,255,0.35), rgba(55,226,196,0.25));
+}
+
+/* Stats row */
+.stats-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 6px;
+}
+.stat-card {
+  padding: 14px; text-align: left;
+}
+.stat-card .value {
+  font-family: var(--font-mono); font-size: 20px; font-weight: 500; color: var(--text-primary);
+}
+.stat-card .label {
+  font-size: 11px; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em;
+}
+
+/* Category tabs */
+.category-tabs {
+  display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 12px;
+  scrollbar-width: none;
+}
+.category-tabs::-webkit-scrollbar { display: none; }
+.category-tab {
+  flex-shrink: 0; padding: 8px 16px; border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  background: var(--glass-surface); border: 1px solid var(--glass-border);
+  transition: all 0.18s ease;
+}
+.category-tab.active {
+  color: #fff; background: linear-gradient(135deg, var(--accent-primary-strong), var(--accent-cyan));
+  border-color: transparent;
+}
+
+/* Tool grid */
+.tool-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+}
+.tool-card {
+  padding: 16px 14px; text-align: left; position: relative;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.tool-card:active { transform: scale(0.96); }
+.tool-card .tool-icon {
+  width: 38px; height: 38px; border-radius: 11px; margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  background: linear-gradient(135deg, rgba(124,107,255,0.25), rgba(55,226,196,0.2));
+  border: 1px solid var(--glass-border);
+}
+.tool-card .tool-name { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; }
+.tool-card .tool-desc { font-size: 11.5px; color: var(--text-muted); line-height: 1.3; }
+.tool-card .pro-badge {
+  position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 700;
+  color: var(--accent-amber); letter-spacing: 0.05em;
+}
+
+@media (min-width: 560px) {
+  .tool-grid { grid-template-columns: repeat(3, 1fr); }
+}
